@@ -1,0 +1,6 @@
+include ':native-clover-loyalty'
+include ':remote-clover-loyalty'
+include ':clover-loyalty-example-pos'
+include ':loyalty-custom-tender'
+include 'loyalty-pass-service'
+

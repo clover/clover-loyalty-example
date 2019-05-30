@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.clover.loyalty.example.cloverloyalty">
+
+    <application android:label="Clover Loyalty Native Example"
+                 android:icon="@mipmap/ic_launcher"
+                 android:name="com.clover.loyalty.example.cloverloyalty.CloverLoyaltyApplication">
+
+        <!--<service android:name=".CloverLoyaltyService"
+                 android:exported="true">
+            <intent-filter>
+                <action android:name="clover.intent.action.LOYALTY_PROVIDER"/> &lt;!&ndash; LoyaltyServiceProvider &ndash;&gt;
+            </intent-filter>
+        </service>-->
+
+
+        <activity android:name="com.clover.loyalty.example.cloverloyalty.CloverLoyaltyActivity"
+                  android:theme="@android:style/Theme.Light.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.clover.loyalty.example.CloverLoyaltyActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
+

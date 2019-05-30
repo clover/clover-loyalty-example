@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="usb_clover_connector">USB Clover Connector</string>
+    <string name="lan_pay_address">wss://10.249.254.214:12345/remote_pay</string>
+    <string name="lan_pay_display">Network Clover Connector</string>
+    <string name="connect">Connect</string>
+    <string name="select_nfc_mode">Select NFC Mode</string>
+    <string name="nfc_mode">NFC Mode</string>
+    <string name="sale">Sale</string>
+    <string name="cancel">Cancel</string>
+    <string name="pay_only">PAY_ONLY</string>
+    <string name="vas_only">VAS_ONLY</string>
+    <string name="vas_or_payment">VAS_OR_PAYMENT</string>
+    <string name="vas_and_payment">VAS_AND_PAYMENT</string>
+  <string name="disconnect">Disconnect</string>
+  <string name="clear_log">Clear Log</string>
+    <string name="start_custom_activity">Start Custom Activity</string>
+    <string name="clear_customer">Clear Customer</string>
+    <string name="reset">Reset</string>
+    <string name="send_order">Send Order</string>
+    <string name="do_sale">Do Sale</string>
+    <string name="do_sale_with_tip">Do Sale with Tip</string>
+    <string name="clover_logo">Clover Logo</string>
+    <string name="sale_amount_label">Sale $</string>
+    <string name="default_sale_amount">54.32</string>
+</resources>

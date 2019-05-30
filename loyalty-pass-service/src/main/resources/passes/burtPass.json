@@ -1,0 +1,45 @@
+{
+  "formatVersion" : 1,
+  "passTypeIdentifier" : "pass.clover.customer",
+  "serialNumber" : "123456789",
+  "teamIdentifier" : "Q993233M8T",
+  "webServiceURL": "http://10.249.254.212:8383",
+  "authenticationToken" : "vxwxd7J8AlNNFPS8k0a0FfUFtq0ewzFdc",
+  "locations" : [
+    {
+      "longitude" : -122.3748889,
+      "latitude" : 37.6189722
+    }
+  ],
+  "barcode" : {
+    "message" : "123456789",
+    "format" : "PKBarcodeFormatPDF417",
+    "messageEncoding" : "iso-8859-1"
+  },
+  "organizationName" : "Burt's Taco Palace",
+  "description" : "Burt's Taco Palace",
+  "logoText" : "Burt's Taco Palace",
+  "foregroundColor" : "rgb(255, 255, 255)",
+  "backgroundColor" : "rgb(55, 117, 50)",
+  "storeCard" : {
+    "primaryFields" : [
+      {
+        "key" : "points",
+        "label" : "free taco points",
+        "value" : 0
+      }
+    ],
+    "auxiliaryFields" : [
+      {
+        "key" : "deal",
+        "label" : "Deal of the Day",
+        "value" : "Tacos"
+      }
+    ]
+  },
+  "nfc" : {
+    "message" : "44XBAPX69H",
+    "encryptionPublicKey" : "MDkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDIgAD5dZCSNJkbSSUTTW/OOc0I+i07ucXt0bxcyodzrFwvrA="
+
+  }
+}

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+  <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:id="@+id/vasModeRadioGroup"
+              android:layout_height="match_parent">
+    <RadioButton
+        android:id="@+id/pay_only"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pay_only"/>
+    <RadioButton
+        android:id="@+id/vas_only"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/vas_only"/>
+    <RadioButton
+        android:id="@+id/vas_or_payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/vas_or_payment"/>
+    <RadioButton
+        android:id="@+id/vas_and_payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/vas_and_payment"/>
+
+  </RadioGroup>
+</LinearLayout>
+
+

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/lighter_dark_grey"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="10dp">
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:src="@drawable/clover_logo"
+        android:contentDescription="@string/clover_logo"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end">
+
+      <Button android:id="@+id/disconnectButton"
+              android:text="@string/disconnect"
+              android:onClick="disconnectClicked"
+              style="@style/MainButton"/>
+      <Button android:id="@+id/clearMessages"
+              android:text="@string/clear_log"
+              android:onClick="clearLog"
+              style="@style/MainButton"/>
+    </LinearLayout>
+  </LinearLayout>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:padding="5dp">
+
+    <Button
+        android:id="@+id/startCustomActivityButton"
+        android:text="@string/start_custom_activity"
+        style="@style/MainButton"
+        android:onClick="startCustomActivityClicked"/>
+
+    <Button android:id="@+id/clearCustomerButton"
+            android:text="@string/clear_customer"
+            android:onClick="clearCustomerClicked"
+            style="@style/MainButton"/>
+
+    <Button android:id="@+id/resetButton"
+            android:text="@string/reset"
+            android:onClick="resetDeviceClicked"
+            style="@style/MainButton"/>
+
+    <TextView
+        android:text="@string/sale_amount_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/saleLabel"
+        android:layout_weight="1"
+        android:textColor="@color/white"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:text="@string/default_sale_amount"
+        android:id="@+id/saleAmount"
+        android:layout_weight="1"
+        android:textColor="@color/white"/>
+  </LinearLayout>
+
+  <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+    <Button android:id="@+id/sendOrderButton"
+            android:text="@string/send_order"
+            android:onClick="sendOrderClicked"
+            style="@style/MainButton"/>
+
+    <Button android:id="@+id/saleButton"
+            android:text="@string/do_sale"
+            android:onClick="saleClicked"
+            style="@style/MainButton"/>
+
+    <Button android:id="@+id/saleWithTipButton"
+            android:text="@string/do_sale_with_tip"
+            android:onClick="saleWithTipClicked"
+            style="@style/MainButton"/>
+  </LinearLayout>
+
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/outputText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:textSize="18sp"
+        android:textColor="@color/white"/>
+  </ScrollView>
+
+</LinearLayout>

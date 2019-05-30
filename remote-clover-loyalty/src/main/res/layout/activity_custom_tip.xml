@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:background="@color/dark_grey"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:text="@string/base_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/baseAmount"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/tipbuttons"
+        android:textColor="@color/white"/>
+
+    <TableLayout
+        android:id="@+id/tipbuttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+    </TableLayout>
+
+    <Button
+        android:text="@string/no_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button10"
+        android:onClick="sendNoTip"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tipbuttons"/>
+</RelativeLayout>

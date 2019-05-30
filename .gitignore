@@ -1,0 +1,14 @@
+*.iml
+.gradle
+.idea/
+/local.properties
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+/clover-loyalty-example-pos/build
+/native-clover-loyalty/build
+/remote-clover-loyalty/build
+/loyalty-custom-tender/build
+/loyalty-pass-service/build
+mypass.pkpass

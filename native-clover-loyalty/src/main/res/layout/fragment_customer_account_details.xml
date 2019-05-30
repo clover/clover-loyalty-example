@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+                android:id="@+id/parent"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_alignParentTop="true"
+            android:id="@+id/customer_card">
+        <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/person_placeholder"/>
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+            <GridLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:columnCount="2" android:layout_marginLeft="20dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ID: "/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/customer_account_id" style="@style/PrimaryText"/>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Name: "/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/customer_account_name" style="@style/PrimaryText"/>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Phone: "/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/customer_account_phone" style="@style/PrimaryText"/>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Points: "/>
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/customer_account_points" style="@style/PointsText"/>
+            </GridLayout>
+        </LinearLayout>
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Select Customer" android:onClick="announceCustomer" android:layout_gravity="bottom|end"/>
+    </LinearLayout>
+    <LinearLayout
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_below="@id/customer_card">
+        <ListView
+                android:id="@+id/account_transactions_list"
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:layout_height="wrap_content"
+                android:text="Show Transactions"
+                android:layout_gravity="fill_vertical"/>
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="fill_vertical">
+            <Button android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Free Small Drink"/>
+            <Button android:layout_width="match_parent" android:layout_height="wrap_content" android:text="10% Off Order"/>
+            <Button android:layout_width="match_parent" android:layout_height="wrap_content" android:text="50% Off 1 Item"/>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

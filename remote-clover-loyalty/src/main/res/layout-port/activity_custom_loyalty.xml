@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:background="@drawable/clover_logo_flex"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <LinearLayout android:id="@+id/vas_enabled"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:paddingTop="10dp"
+                  android:gravity="center_horizontal"
+                  android:orientation="horizontal"
+                  android:visibility="invisible">
+        <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/nfc_tap_logo"
+                android:scaleX="1"
+                android:scaleY="1"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:textColor="#AAAAAA"
+                android:textSize="24dp"
+                android:layout_height="wrap_content"
+                android:text=" Tap Logo Above"
+                android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/order_panel"
+                  android:paddingBottom="10dp"
+                  android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="1"
+                  android:layout_alignParentLeft="true"
+                  android:orientation="vertical">
+        <ListView
+                android:id="@+id/display_order_list"
+                android:padding="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_above="@id/display_order_list"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:gravity="left"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textColor="@color/white"
+                    android:text="Order Total: "
+                    android:layout_alignParentBottom="true" />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:gravity="right"
+                    android:layout_gravity="right"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    android:id="@+id/order_total_label"
+                    android:text=" $34.79"
+                    android:layout_alignParentBottom="true" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/no_customer_panel"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:paddingBottom="10dp"
+                  android:gravity="center">
+        <Button android:id="@+id/choose_phone_number_button"
+                style="@style/flexButton"
+                android:text="Phone #"/>
+        <LinearLayout android:id="@+id/barcode_enabled"
+                      style="@style/flexButton"
+                      android:onClick="startBarCode"
+                      android:background="@drawable/button_border_padding_white">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="Scan Barcode: " />
+            <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_btn_scan"/>
+        </LinearLayout>
+        <LinearLayout android:id="@+id/account_number_component"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:paddingTop="10dp"
+                      android:visibility="visible"
+                      android:layout_gravity="center_horizontal"
+                      android:gravity="center_horizontal" >
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:paddingEnd="5dp"
+                    android:text="ID: "/>
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/account_number_field"
+                    android:layout_marginEnd="10dp"
+                    android:height="45dp"
+                    android:width="100dp"
+                    android:inputType="number"/>
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="45dp"
+                    android:text="Done"
+                    android:textColor="@color/white"
+                    android:onClick="sendAccountNumber"
+                    android:background="@drawable/button_border_padding_white"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout android:id="@+id/customer_panel"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:background="@color/dark_grey"
+                  android:layout_alignParentRight="true"
+                  android:orientation="vertical"
+                  android:visibility="gone"
+                  android:gravity="center"
+                  android:layout_toRightOf="@+id/order_panel">
+        <TextView android:id="@+id/not_you_text_view"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:gravity="center_horizontal"
+                  android:onClick="clearCustomer"
+                  android:text="Not you?"
+                  android:textSize="24dp"/>
+        <TextView android:id="@+id/welcome_message"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:gravity="center_horizontal"
+                  android:textAlignment="center"
+                  android:textColor="@color/white"
+                  android:textSize="36dp"/>
+        <TextView android:id="@+id/customer_account_points"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textAlignment="center"
+                  android:textColor="@color/white"
+                android:textSize="96dp"/>
+        <LinearLayout
+                android:id="@+id/offers_panel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp">
+
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:id="@+id/phone_number_component"
+                  android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="1"
+                  android:orientation="vertical"
+                  android:gravity="center"
+                  android:background="@color/dark_grey"
+                  android:visibility="gone">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingBottom="10dp">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_columnSpan="3"
+                    android:layout_gravity="center_horizontal"
+                    android:text="000.000.0000"
+                    android:gravity="fill"
+                    android:textAlignment="center"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    android:id="@+id/entered_phone_number"/>
+        </LinearLayout>
+        <fragment
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                class="com.clover.remote.clover.loyalty.NumberPadFragment"
+                android:layout_gravity="center_horizontal"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:gravity="center_horizontal">
+            <Button
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:text="Done"
+                    android:onClick="sendPhoneNumber"
+                    android:textColor="@color/white"
+                    android:padding="10dp"
+                    android:background="@drawable/button_border_padding_white"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

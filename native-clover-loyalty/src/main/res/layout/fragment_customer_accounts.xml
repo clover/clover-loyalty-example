@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:tag="CUSTOMER_LIST_FRAGMENT"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+            android:id="@+id/keypad"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_columnSpan="3" android:layout_gravity="center_horizontal" android:text="000.000.0000" android:gravity="fill"
+                  android:textAlignment="center" android:textSize="24sp" android:id="@+id/filterTextView"/>
+
+        <fragment android:layout_width="match_parent" android:layout_height="wrap_content" class="com.clover.loyalty.example.cloverloyalty.NumberPadFragment" android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
+
+        <ListView
+                android:background="@android:color/white"
+                android:layout_alignParentLeft="true"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/customer_account_list"
+                android:name="com.clover.loyalty.example.CustomerListFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                tools:context="com.clover.loyalty.example.cloverloyalty.CustomerListFragment"
+                android:layout_toLeftOf="@id/keypad"
+        />
+
+
+</RelativeLayout>

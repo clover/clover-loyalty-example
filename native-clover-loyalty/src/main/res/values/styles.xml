@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="PrimaryText">
+        <item name="android:color">#000000</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24dp</item>
+    </style>
+
+    <style name="PointsText" parent="PrimaryText">
+        <item name="android:color">#006600</item>
+    </style>
+
+    <style name="roundButton">
+        <!--<item name="android:width">50dp</item>-->
+        <!--<item name="android:height">50dp</item>-->
+        <item name="android:textSize">20dp</item>
+        <item name="android:background">@drawable/round_button</item>
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_margin">3dp</item>
+    </style>
+
+    <style name="clearButton">
+        <item name="android:width">50dp</item>
+        <item name="android:height">50dp</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+
+    <style name="doneButton">
+        <item name="android:textSize">20dp</item>
+    </style>
+
+    <style name="li1">
+        <item name="android:textSize">32dp</item>
+        <item name="android:textColor">#DDDDDD</item>
+    </style>
+
+    <style name="flexButton">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">45dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/button_border_padding_white</item>
+    </style>
+
+    <style name="discountButton">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/button_border_padding_white</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+</resources>
