@@ -9,13 +9,13 @@
     <dependency>
       <groupId>com.clover</groupId>
       <artifactId>clover-remote-interface</artifactId>
-      <version>252-SNAPSHOT</version>
+      <version>latest.integration</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>com.clover.sdk</groupId>
       <artifactId>clover-android-sdk</artifactId>
-      <version>224-SNAPSHOT</version>
+      <version>latest.integration</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

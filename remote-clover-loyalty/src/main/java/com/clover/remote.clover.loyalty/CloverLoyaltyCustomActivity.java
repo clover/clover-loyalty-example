@@ -38,6 +38,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -64,9 +65,11 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
   private CustomerInfo customerInfo;
   private DisplayOrder displayOrder;
   private String number = "";
+  private Gson gson = new GsonBuilder().serializeNulls().create();
+  private boolean shouldStop = true;
+  Button forceStopButton;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_custom_loyalty);
 
@@ -82,8 +85,7 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
     getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
     findViewById(R.id.account_number_field).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-      @Override
-      public void onFocusChange(View v, boolean hasFocus) {
+      @Override public void onFocusChange(View v, boolean hasFocus) {
         if (!hasFocus) {
           InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
           if (null != imm) {
@@ -92,6 +94,21 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
             Log.e(TAG, "getSystemService(Context.INPUT_METHOD_SERVICE) returned null! Cannot hideSoftInputFromWindow");
           }
         }
+      }
+    });
+
+    forceStopButton = findViewById(R.id.forceStopButton);
+    forceStopButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if (shouldStop) {
+          shouldStop = false;
+          stop(LoyaltyDataTypes.QUICKPAY_TYPE, true);
+        } else {
+          shouldStop = true;
+          startQuickPay();
+        }
+
       }
     });
 
@@ -116,8 +133,7 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
     }
 
     findViewById(R.id.not_you_text_view).setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
+      @Override public void onClick(View v) {
         clearCustomer(v);
       }
     });
@@ -125,10 +141,8 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
     Log.d(TAG, "CloverLoyaltyCustomActivity: it loaded!");
   }
 
-  @Override
-  protected void onResume() {
+  @Override protected void onResume() {
     super.onResume();
-
     if (quickPayConfig != null || vasConfig != null) {
       findViewById(R.id.tap_enabled).setVisibility(View.VISIBLE);
       if (quickPayConfig != null) {
@@ -156,8 +170,7 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
     }
   }
 
-  @Override
-  protected void onPause() {
+  @Override protected void onPause() {
     super.onPause();
     if (quickPayConfig != null || vasConfig != null) {
       findViewById(R.id.tap_enabled).setVisibility(View.GONE);
@@ -194,20 +207,15 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
     }
   }
 
-  /* *************************************
-  /* methods overrides from CloverLoyaltyCFPActivity
-  /* *************************************/
-
-  /*
-   *  this gets called out of super.onCreate() after configs are retrieved from clover-loyalty service
-   *
-   *  will hold on to the data configs we are aware of, so we can update the ui and show/hide
-   *  the appropriate components. Phone, acct number and barcode are "collected" by this activity,
-   *  so we will need those configs to announce that we collected customer identifying information
-
-   */
-  @Override
-  public void onLoyaltyDataLoaded(List<LoyaltyDataConfig> loyaltyDataConfigList, CustomerInfo customerInfo, DisplayOrder displayOrder) {
+    /*
+     *  This gets called out of super.onCreate() after configs are retrieved from clover-loyalty service.
+     *  We hold on to the data configs we are aware of, so we can update the ui and show/hide
+     *  the appropriate components. Phone, acct number and barcode are "collected" by this activity,
+     *  so we will need those configs to announce that we collected customer identifying information
+     *
+     */
+  @Override public void onLoyaltyDataLoaded(List<LoyaltyDataConfig> loyaltyDataConfigList, CustomerInfo customerInfo, DisplayOrder displayOrder) {
+    Log.d(TAG, "onLoyaltyDataLoaded " + loyaltyDataConfigList);
     this.loyaltyDataConfigList = loyaltyDataConfigList;
     emailConfig = null;
     phoneConfig = null;
@@ -229,6 +237,7 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
         startVas();
       } else if (LoyaltyDataTypes.QUICKPAY_TYPE.equals(config.getType())) {
         Log.d(TAG, "Starting: " + LoyaltyDataTypes.QUICKPAY_TYPE);
+        forceStopButton.setVisibility(View.VISIBLE);
         quickPayConfig = config;
         startQuickPay();
 
@@ -240,14 +249,14 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
     }
     Log.d(TAG, "loyaltyDataConfigList: " + loyaltyDataConfigList);
 
-    updateCustomerPanel();
+    sendRegistrationConfigs();
+    updateCustomerPanel(customerInfo);
     updateDisplayOrder();
   }
 
   private void startQuickPay() {
     // Build the quickpay configuration
     Map<String, String> configuration = new HashMap<>();
-    Gson GSON = new Gson();
 
     // Accept all card entry methods.  For quickpay this is tap/chip insert/swipe
     configuration.put(LoyaltyDataTypes.QUICKPAY_TYPE_KEYS.QUICKPAY_CARD_ENTRY_METHODS, String.valueOf(CardEntryMethods.ALL));
@@ -255,7 +264,7 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
     // Build the set of application specific values.  This is a additional configuration for payments.
     Map<String, String> applicationSpecificValues = new HashMap<>();
     applicationSpecificValues.put("ExampleAppKey1", "ExampleAppValue1");
-    configuration.put(LoyaltyDataTypes.QUICKPAY_TYPE_KEYS.QUICKPAY_APP_SPECIFIC_MAP, GSON.toJson(applicationSpecificValues));
+    configuration.put(LoyaltyDataTypes.QUICKPAY_TYPE_KEYS.QUICKPAY_APP_SPECIFIC_MAP, gson.toJson(applicationSpecificValues));
 
     // Set up/create the embedded VAS settings.
     // Note that if we are running vas and QuickPay, then this configuration will take precedence if it is
@@ -281,7 +290,7 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
     // configuration with a VasMode.VAS_ONLY while the quickPay service is running makes little sense.
     configuration.put(LoyaltyDataTypes.QUICKPAY_TYPE_KEYS.QUICKPAY_VAS_CONFIG, embeddedVasConfig);
 
-    start(LoyaltyDataTypes.QUICKPAY_TYPE, null, GSON.toJson(configuration));
+    start(LoyaltyDataTypes.QUICKPAY_TYPE, null, gson.toJson(configuration));
   }
 
   private void startVas() {
@@ -298,7 +307,7 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
     serviceType.setDataType(VasDataTypeType.ALL);
     serviceTypes.add(serviceType);
     vs.setServiceTypes(serviceTypes);
-    // String vasSettings = GSON.toJson(vs.getJSONObject().toString());
+    // String vasSettings = gson.toJson(vs.getJSONObject().toString());
     // Results in W/String  "{\"serviceTypes\":{\"elements\":[{\"dataType\":\"ALL\"}]},\"vasMode\":\"VAS_AND_PAYMENT\",\"pushMode\":\"PUSH_AND_GET\"}"
     // If we try to deserialize this in any normal fashion (settings = gson.fromJson(configuration, VasSettings.class)),
     // we get
@@ -346,10 +355,17 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
     if (CFPConstants.CUSTOMER_INFO_EXTRA.equals(key)) {
       Log.d(TAG, String.format("onSessionDataChanged: Got a customer key %s, data %s: ", key, data));
       customerInfo = (CustomerInfo) data;
+      sendCustomerInfo(customerInfo);
+      Log.d("SendCustomerInfo: ", "from onSessionDataChanged");
       // We do not want to stop VAS here, because it will stop quickPay as well.
       // stop(LoyaltyDataTypes.VAS_TYPE);
-      updateCustomerPanel();
+      updateCustomerPanel(customerInfo);
     }
+  }
+
+  @Override
+  public void onSessionEvent(String type, String data) {
+
   }
 
   @Override
@@ -360,14 +376,20 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
       setResultAndFinish(RESULT_OK, null);
     } else {
       try {
-        JsonObject jsonObject = new Gson().fromJson(s, JsonObject.class);
+        JsonObject jsonObject = gson.fromJson(s, JsonObject.class);
         if (jsonObject.has("displayOrder")) {
+          // the displayOrder message demonstrates updating an order on the custom activity
           if (jsonObject.get("displayOrder") != null && !"null".equals(jsonObject.get("displayOrder").getAsString())) {
             displayOrder = new DisplayOrder(jsonObject.get("displayOrder").getAsString());
             updateDisplayOrder();
           } else {
             displayOrder = null;
             updateDisplayOrder();
+          }
+        } else if (jsonObject.has("command")) {
+          // the command object is used for testing the loyalty API by loopback
+          if (jsonObject.get("command") != null) {
+            automateReply(jsonObject.get("command").getAsString(), jsonObject);
           }
         }
       } catch (Exception e) {
@@ -376,42 +398,46 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
     }
   }
 
-  private Map.Entry<Boolean, String> parseCustomerInfo(CustomerInfo custInfo) {
+  private Map.Entry<Boolean, String> parseCustomerInfo(final CustomerInfo customerInfo) {
     boolean error = false;
     try {
-      String displayString = custInfo.getDisplayString();
-      String externalId = custInfo.getExternalId();
-      String externalSystemName = custInfo.getExternalSystemName();
-      Map<String, String> extras = custInfo.getExtras();
-      Customer cust = custInfo.getCustomer();
-      String id = cust.getId();
-      Reference merchant = cust.getMerchant();
-      String firstName = cust.getFirstName();
-      String lastName = cust.getLastName();
-      Boolean marketingAllowed = cust.getMarketingAllowed();
-      Long customerSince = cust.getCustomerSince();
-      List<Reference> orders = cust.getOrders();
-      List<Address> addresses = cust.getAddresses();
-      List<EmailAddress> emailAddress = cust.getEmailAddresses();
-      List<PhoneNumber> phoneNumbers = cust.getPhoneNumbers();
-      List<Card> cards = cust.getCards();
-      CustomerMetadata customerMetadata = cust.getMetadata();
+      String displayString = customerInfo.getDisplayString();
+      String externalId = customerInfo.getExternalId();
+      String externalSystemName = customerInfo.getExternalSystemName();
+      Map<String, String> extras = customerInfo.getExtras();
+
+      JsonObject customerJson = new JsonObject();
+      if (customerInfo.getCustomer() != null) {
+        Customer cust = customerInfo.getCustomer();
+        String id = cust.getId();
+        Reference merchant = cust.getMerchant();
+        String firstName = cust.getFirstName();
+        String lastName = cust.getLastName();
+        Boolean marketingAllowed = cust.getMarketingAllowed();
+        Long customerSince = cust.getCustomerSince();
+        List<Reference> orders = cust.getOrders();
+        List<Address> addresses = cust.getAddresses();
+        List<EmailAddress> emailAddress = cust.getEmailAddresses();
+        List<PhoneNumber> phoneNumbers = cust.getPhoneNumbers();
+        List<Card> cards = cust.getCards();
+        CustomerMetadata customerMetadata = cust.getMetadata();
+
+        customerJson.addProperty("id", id);
+        customerJson.addProperty("firstName", firstName);
+        customerJson.addProperty("lastName", lastName);
+        customerJson.addProperty("customerSince", customerSince);
+      }
 
       JsonObject customerInfoJson = new JsonObject();
-      JsonObject customerJson = new JsonObject();
       customerInfoJson.addProperty("displayString", displayString);
       customerInfoJson.addProperty("externalId", externalId);
       customerInfoJson.addProperty("externalSystemName", externalSystemName);
-      customerInfoJson.addProperty("extras", new Gson().toJson(extras));
-      customerJson.addProperty("id", id);
-      customerJson.addProperty("firstName", firstName);
-      customerJson.addProperty("lastName", lastName);
-      customerJson.addProperty("customerSince", customerSince);
+      customerInfoJson.addProperty("extras", gson.toJson(extras));
       customerInfoJson.add("customer", customerJson);
 
-      return new java.util.AbstractMap.SimpleEntry<>(error, new Gson().toJson(customerInfoJson));
+      return new java.util.AbstractMap.SimpleEntry<>(error, gson.toJson(customerInfoJson));
     } catch (Exception e) {
-      e.printStackTrace();
+      Log.d(TAG, "parseCustomerInfo: Exception: " + e.getMessage(), e);
       error = true;
       return new java.util.AbstractMap.SimpleEntry<>(error, e.getMessage());
     }
@@ -438,10 +464,10 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
       Log.e(getClass().getSimpleName(), "sendAccountNumber: AccountNumber Config not loaded", null);
       return;
     }
+    final String accountNumber = ((EditText) findViewById(R.id.account_number_field)).getText().toString();
     new AsyncTask<Void, Void, Void>() {
       @Override
       protected Void doInBackground(Void... voids) {
-        String accountNumber = ((EditText) findViewById(R.id.account_number_field)).getText().toString();
         announceCustomerProvidedData(accountNumberConfig, accountNumber);
         return null;
       }
@@ -476,24 +502,24 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
     start("BARCODE", null, null);
   }
 
-  private void updateCustomerPanel() {
-    boolean hasCustomer = customerInfo != null;
+  private void updateCustomerPanel(final CustomerInfo customerInfo) {
+    boolean hasCustomerInfo = customerInfo != null;
+    boolean hasCustomer = hasCustomerInfo && customerInfo.getCustomer() != null;
+    boolean hasExtras = hasCustomerInfo && customerInfo.getExtras() != null;
     boolean hasOrder = displayOrder != null;
     // update the ui based on whether we have a customer identified or not.
     // this could also be handled by a separate custom activity, but in this example
     // a single activity collects info, and display the customer info
-    findViewById(R.id.no_customer_panel).setVisibility(hasCustomer ? View.GONE : View.VISIBLE);
-    findViewById(R.id.customer_panel).setVisibility(hasCustomer ? View.VISIBLE : View.GONE);
+    findViewById(R.id.no_customer_panel).setVisibility(hasCustomerInfo ? View.GONE : View.VISIBLE);
+    findViewById(R.id.customer_panel).setVisibility(hasCustomerInfo ? View.VISIBLE : View.GONE);
     if (!getApplicationContext().getResources().getBoolean(R.bool.isFlex)) {
-      findViewById(R.id.phone_number_component).setVisibility((!hasCustomer && phoneConfig != null) ? View.VISIBLE : View.GONE);
+      findViewById(R.id.phone_number_component).setVisibility((!hasCustomerInfo && phoneConfig != null) ? View.VISIBLE : View.GONE);
     }
-    findViewById(R.id.account_number_component).setVisibility((!hasCustomer && accountNumberConfig != null) ? View.VISIBLE : View.GONE);
-    findViewById(R.id.vas_enabled).setVisibility((!hasCustomer && vasConfig != null) ? View.VISIBLE : View.INVISIBLE);
-    // Not sure we want to do the following...
-    // findViewById(R.id.quick_pay_enabled).setVisibility((!hasCustomer && quickPayConfig != null) ? View.VISIBLE : View.GONE);
-    findViewById(R.id.barcode_enabled).setVisibility((!hasCustomer && barCodeConfig != null) ? View.VISIBLE : View.GONE);
+    findViewById(R.id.account_number_component).setVisibility((!hasCustomerInfo && accountNumberConfig != null) ? View.VISIBLE : View.GONE);
+    findViewById(R.id.vas_enabled).setVisibility((!hasCustomerInfo && vasConfig != null) ? View.VISIBLE : View.GONE);
+    findViewById(R.id.barcode_enabled).setVisibility((!hasCustomerInfo && barCodeConfig != null) ? View.VISIBLE : View.GONE);
 
-    if (hasCustomer) {
+    if (hasCustomerInfo && hasCustomer) {
       ((TextView) findViewById(R.id.welcome_message)).setText(customerInfo.getCustomer().getFirstName());
     } else {
       ((TextView) findViewById(R.id.welcome_message)).setText("");
@@ -508,14 +534,14 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
     ((LinearLayout) findViewById(R.id.offers_panel)).removeAllViews();
 
     ((TextView) findViewById(R.id.customer_account_points)).setText("");
-    if (hasCustomer) {
+    if (hasCustomer && hasExtras) {
       // building the right panel if we have a customer
       String points = customerInfo.getExtras().get("POINTS");
       ((TextView) findViewById(R.id.customer_account_points)).setText(points);
 
       // offers are a custom payload between the integrator and the custom activity
       String offers = customerInfo.getExtras().get("OFFERS");
-      JsonArray obj = new Gson().fromJson(offers, JsonArray.class);
+      JsonArray obj = gson.fromJson(offers, JsonArray.class);
 
       for (int i = 0; i < obj.size(); i++) {
         Button btn = new Button(new ContextThemeWrapper(this, R.style.discountButton), null, 0);
@@ -532,7 +558,7 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
             sendObject.addProperty("customerUUID", customerInfo.getExternalId());
             sendObject.addProperty("offerId", id);
             try {
-              sendMessage(new Gson().toJson(sendObject));
+              sendMessage(gson.toJson(sendObject));
             } catch (Exception e) {
               e.printStackTrace();
             }
@@ -547,12 +573,9 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
     } else {
       findViewById(R.id.no_customer_panel).setVisibility(View.VISIBLE);
       findViewById(R.id.customer_panel).setVisibility(View.GONE);
-      TextView phoneEnter = findViewById(R.id.entered_phone_number);
-      phoneEnter.setText(R.string.phone_num_template);
-      number = "";
     }
 
-    if (!hasCustomer && vasConfig != null) {
+    if (!hasCustomerInfo && vasConfig != null) {
       startVas();
     }
   }
@@ -693,6 +716,80 @@ public class CloverLoyaltyCustomActivity extends CloverLoyaltyCFPActivity implem
 
     String process(String currentNumber) {
       return currentNumber;
+    }
+  }
+
+
+
+  /* *************************************
+  /* test methods
+  /*
+  /* these methods are used to provide loopback functionality of data objects to facilitate
+  /* testing of the parsing of these objects.
+  /*
+  /* *************************************/
+
+  private void automateReply(String command, JsonObject jsonObject){
+    switch (command){
+      case "SendCustomerProvidedData":
+        sendCustomerProvidedData(jsonObject);
+        break;
+      case "SendCustomerInfo":
+        sendCustomerInfo(customerInfo);
+        break;
+    }
+  }
+
+  private void sendCustomerProvidedData(JsonObject object){
+    if(object.get("config") != null) {
+      JsonObject configObject = object.get("config").getAsJsonObject();
+      LoyaltyDataConfig config = new LoyaltyDataConfig(gson.toJson(configObject));
+      announceCustomerProvidedData(config, object.get("data") != null ? object.get("data").getAsString() : null);
+    }
+  }
+
+  private void sendRegistrationConfigs() {
+    JsonObject SendRegistrationConfigs = new JsonObject();
+    JsonArray configObject = new JsonArray();
+
+    SendRegistrationConfigs.addProperty("type", "LoyaltyRegistrationConfigs" );
+    for (LoyaltyDataConfig dataConfig : loyaltyDataConfigList) {
+      JsonObject loyaltyConfig = new JsonObject();
+      loyaltyConfig.addProperty("type", dataConfig.getType());
+      if(dataConfig.getType().equals(LoyaltyDataTypes.VAS_TYPE)){
+        loyaltyConfig.addProperty("configs", gson.toJson(dataConfig.getConfiguration()));
+      }
+      configObject.add(loyaltyConfig);
+    }
+    SendRegistrationConfigs.add("configs", configObject);
+    try {
+      sendMessage(gson.toJson(SendRegistrationConfigs));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  private void sendCustomerInfo(final CustomerInfo customerInfo) {
+    JsonObject SendCustomerInfo = new JsonObject();
+    SendCustomerInfo.addProperty("type" , "CustomerInfo");
+    if (customerInfo != null) {
+      Map.Entry<Boolean, String> entry = parseCustomerInfo(customerInfo);
+      Boolean error = entry.getKey();
+      String customerInfoString = entry.getValue();
+      SendCustomerInfo.addProperty("error", error);
+      SendCustomerInfo.addProperty("customerInfo", customerInfoString);
+      Log.d(TAG, "sendCustomerInfo: " + customerInfoString);
+      if (customerInfo.getCustomer() != null) {
+        SendCustomerInfo.addProperty("firstName", customerInfo.getCustomer().getFirstName());
+      }
+    } else {
+      Log.d(TAG, "sendCustomerInfo: sending null customerInfo.");
+      SendCustomerInfo.add("customerInfo", null);
+    }
+    try {
+      sendMessage(gson.toJson(SendCustomerInfo));
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 }
