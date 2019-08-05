@@ -8,11 +8,11 @@
     <version>7</version>
   </parent>
   <groupId>com.clover.sdk</groupId>
-  <artifactId>clover-android-sdk</artifactId>
-  <version>231-SNAPSHOT</version>
+  <artifactId>clover-android-connector-sdk</artifactId>
+  <version>237-SNAPSHOT</version>
   <packaging>aar</packaging>
-  <name>Clover Android SDK</name>
-  <description>Android services and objects used for interacting with Clover Services</description>
+  <name>Clover Android Connector SDK</name>
+  <description>Android services and objects used for interacting with Clover Connector Services</description>
   <url>http://www.clover.com/</url>
   <licenses>
     <license>
@@ -34,10 +34,22 @@
   </scm>
   <dependencies>
     <dependency>
-      <groupId>com.clover</groupId>
-      <artifactId>calc</artifactId>
-      <version>280-SNAPSHOT</version>
+      <groupId>com.android.support</groupId>
+      <artifactId>support-annotations</artifactId>
+      <version>28.0.0</version>
       <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.clover.sdk</groupId>
+      <artifactId>clover-android-sdk</artifactId>
+      <version>237-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.8.5</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

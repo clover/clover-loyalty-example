@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.clover</groupId>
     <artifactId>core-parent</artifactId>
-    <version>280-SNAPSHOT</version>
+    <version>286-SNAPSHOT</version>
   </parent>
 
   <name>Core Order Calc library</name>

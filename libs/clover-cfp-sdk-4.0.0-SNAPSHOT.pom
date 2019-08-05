@@ -27,13 +27,13 @@
     <dependency>
       <groupId>com.clover.sdk</groupId>
       <artifactId>clover-android-loyalty-kit</artifactId>
-      <version>219.5</version>
+      <version>237-SNAPSHOT</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>com.clover</groupId>
       <artifactId>clover-remote-interface</artifactId>
-      <version>243</version>
+      <version>265-SNAPSHOT</version>
       <scope>runtime</scope>
     </dependency>
   </dependencies>

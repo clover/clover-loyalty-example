@@ -9,7 +9,7 @@
   </parent>
   <groupId>com.clover.sdk</groupId>
   <artifactId>clover-android-loyalty-kit</artifactId>
-  <version>231-SNAPSHOT</version>
+  <version>237-SNAPSHOT</version>
   <packaging>aar</packaging>
   <name>Clover Android Loyalty Kit</name>
   <description>Android services and objects used for interacting with Clover Loyalty Kit</description>
@@ -42,7 +42,7 @@
     <dependency>
       <groupId>com.clover.sdk</groupId>
       <artifactId>clover-android-sdk</artifactId>
-      <version>231-SNAPSHOT</version>
+      <version>237-SNAPSHOT</version>
       <scope>compile</scope>
     </dependency>
     <dependency>

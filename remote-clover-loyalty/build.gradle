@@ -33,13 +33,13 @@ android {
 dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation files ('../libs/clover-android-connector-sdk-231-SNAPSHOT.aar')
-    implementation files ('../libs/clover-android-sdk-231-SNAPSHOT.aar')
+    implementation files ('../libs/clover-android-connector-sdk-237-SNAPSHOT.aar')
+    implementation files ('../libs/clover-android-sdk-237-SNAPSHOT.aar')
     testImplementation 'junit:junit:4.12'
-    compile files('../libs/clover-android-loyalty-kit-231-SNAPSHOT.aar')
+    compile files('../libs/clover-android-loyalty-kit-237-SNAPSHOT.aar')
     compile files('../libs/clover-cfp-sdk-4.0.0-SNAPSHOT.aar')
     implementation 'com.google.code.gson:gson:2.3.1'
-    implementation files('../libs/clover-remote-interface-259-SNAPSHOT.aar')
+    implementation files('../libs/clover-remote-interface-265-SNAPSHOT.aar')
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
